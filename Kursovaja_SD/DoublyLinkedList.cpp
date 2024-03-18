@@ -1,6 +1,6 @@
 #include "DoublyLinkedList.h"
 
-//Метод нахождения среднего узла(середины списка) между двумя заданными узадами(start и end)
+//РњРµС‚РѕРґ РЅР°С…РѕР¶РґРµРЅРёСЏ СЃСЂРµРґРЅРµРіРѕ СѓР·Р»Р°(СЃРµСЂРµРґРёРЅС‹ СЃРїРёСЃРєР°) РјРµР¶РґСѓ РґРІСѓРјСЏ Р·Р°РґР°РЅРЅС‹РјРё СѓР·Р°РґР°РјРё(start Рё end)
 template <typename T>
 Node<T>* DoublyLinkedList<T>::findMiddle(Node<T>* start, Node<T>* end) {
     if (!start) return nullptr;
@@ -10,21 +10,21 @@ Node<T>* DoublyLinkedList<T>::findMiddle(Node<T>* start, Node<T>* end) {
         slow = slow->next;
         fast = fast->next->next;
     }
-    //Будет указывать на средний узел списка, т.к. fast прошел быстрее
+    //Р‘СѓРґРµС‚ СѓРєР°Р·С‹РІР°С‚СЊ РЅР° СЃСЂРµРґРЅРёР№ СѓР·РµР» СЃРїРёСЃРєР°, С‚.Рє. fast РїСЂРѕС€РµР» Р±С‹СЃС‚СЂРµРµ
     return slow;
 }
 
-//Метод объединения двух отсортированных частей списка в одну часть
+//РњРµС‚РѕРґ РѕР±СЉРµРґРёРЅРµРЅРёСЏ РґРІСѓС… РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… С‡Р°СЃС‚РµР№ СЃРїРёСЃРєР° РІ РѕРґРЅСѓ С‡Р°СЃС‚СЊ
 template <typename T>
 void DoublyLinkedList<T>::merge(Node<T>* start, Node<T>* mid, Node<T>* end) {
     Node<T>* left = start;
     Node<T>* right = mid->next;
 
-    // Создаем временный список для слияния
+    // РЎРѕР·РґР°РµРј РІСЂРµРјРµРЅРЅС‹Р№ СЃРїРёСЃРѕРє РґР»СЏ СЃР»РёСЏРЅРёСЏ
     DoublyLinkedList<T> mergedList; 
 
     while (left != mid->next && right != end->next) {
-        //Если l < r, то l добавляется в конец списка, иначе значение r + указатели сдвигаются на следующий узел
+        //Р•СЃР»Рё l < r, С‚Рѕ l РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РІ РєРѕРЅРµС† СЃРїРёСЃРєР°, РёРЅР°С‡Рµ Р·РЅР°С‡РµРЅРёРµ r + СѓРєР°Р·Р°С‚РµР»Рё СЃРґРІРёРіР°СЋС‚СЃСЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СѓР·РµР»
         if (left->data < right->data) {
             mergedList.insertBack(left->data);
             left = left->next;
@@ -35,7 +35,7 @@ void DoublyLinkedList<T>::merge(Node<T>* start, Node<T>* mid, Node<T>* end) {
         }
     }
 
-    //Если указатель достигает конца своей половины, то оставшиеся элементы добавляются в том порядке котором идут
+    //Р•СЃР»Рё СѓРєР°Р·Р°С‚РµР»СЊ РґРѕСЃС‚РёРіР°РµС‚ РєРѕРЅС†Р° СЃРІРѕРµР№ РїРѕР»РѕРІРёРЅС‹, С‚Рѕ РѕСЃС‚Р°РІС€РёРµСЃСЏ СЌР»РµРјРµРЅС‚С‹ РґРѕР±Р°РІР»СЏСЋС‚СЃСЏ РІ С‚РѕРј РїРѕСЂСЏРґРєРµ РєРѕС‚РѕСЂРѕРј РёРґСѓС‚
     while (left != mid->next) {
         mergedList.insertBack(left->data);
         left = left->next;
@@ -46,7 +46,7 @@ void DoublyLinkedList<T>::merge(Node<T>* start, Node<T>* mid, Node<T>* end) {
         right = right->next;
     }
 
-    // Заменяем отсортированный участок в исходном списке на отсортированный участок из mergedList
+    // Р—Р°РјРµРЅСЏРµРј РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ СѓС‡Р°СЃС‚РѕРє РІ РёСЃС…РѕРґРЅРѕРј СЃРїРёСЃРєРµ РЅР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ СѓС‡Р°СЃС‚РѕРє РёР· mergedList
     Node<T>* temp = start;
     Node<T>* mergedCurrent = mergedList.getHead();
     while (temp != end->next) {
@@ -54,35 +54,34 @@ void DoublyLinkedList<T>::merge(Node<T>* start, Node<T>* mid, Node<T>* end) {
         temp = temp->next;
         mergedCurrent = mergedCurrent->next;
     }
-
-    std::cout << "Список после слияния: ";
-    display();
-    std::cout << std::endl;
+    //std::cout << "РЎРїРёСЃРѕРє РїРѕСЃР»Рµ СЃР»РёСЏРЅРёСЏ: ";
+    //display();
+    //std::cout << std::endl;
 }
 
-//Метод сортировки параллельным рекурсивным слиянием
+//РњРµС‚РѕРґ СЃРѕСЂС‚РёСЂРѕРІРєРё РїР°СЂР°Р»Р»РµР»СЊРЅС‹Рј СЂРµРєСѓСЂСЃРёРІРЅС‹Рј СЃР»РёСЏРЅРёРµРј
 template <typename T>
 void DoublyLinkedList<T>::parallelMergeSortHelper(Node<T>* start, Node<T>* end) {
-    //Проверка условия на продолжение рекурсии
+    //РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ РЅР° РїСЂРѕРґРѕР»Р¶РµРЅРёРµ СЂРµРєСѓСЂСЃРёРё
     if (start != end && start && end && start != end->next) {
-        //Нахождение среднего узла
+        //РќР°С…РѕР¶РґРµРЅРёРµ СЃСЂРµРґРЅРµРіРѕ СѓР·Р»Р°
         Node<T>* mid = findMiddle(start, end);
-        //Создание двух потоков. Для leftThread(start и mid опредляют левую половину, this в качестве указателя на текущий объект)
+        //РЎРѕР·РґР°РЅРёРµ РґРІСѓС… РїРѕС‚РѕРєРѕРІ. Р”Р»СЏ leftThread(start Рё mid РѕРїСЂРµРґР»СЏСЋС‚ Р»РµРІСѓСЋ РїРѕР»РѕРІРёРЅСѓ, this РІ РєР°С‡РµСЃС‚РІРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° С‚РµРєСѓС‰РёР№ РѕР±СЉРµРєС‚)
         std::thread leftThread(&DoublyLinkedList<T>::parallelMergeSortHelper, this, start, mid);
         std::thread rightThread(&DoublyLinkedList<T>::parallelMergeSortHelper, this, mid->next, end);
-        //Оба потока запускаются параллелельно, основной поток ожидает их завершения, прежде чем начнёт слияние
+        //РћР±Р° РїРѕС‚РѕРєР° Р·Р°РїСѓСЃРєР°СЋС‚СЃСЏ РїР°СЂР°Р»Р»РµР»РµР»СЊРЅРѕ, РѕСЃРЅРѕРІРЅРѕР№ РїРѕС‚РѕРє РѕР¶РёРґР°РµС‚ РёС… Р·Р°РІРµСЂС€РµРЅРёСЏ, РїСЂРµР¶РґРµ С‡РµРј РЅР°С‡РЅС‘С‚ СЃР»РёСЏРЅРёРµ
         leftThread.join();
         rightThread.join();
-        //Слияние двух сортированных участков списка
+        //РЎР»РёСЏРЅРёРµ РґРІСѓС… СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… СѓС‡Р°СЃС‚РєРѕРІ СЃРїРёСЃРєР°
         merge(start, mid, end);
     }
 }
 
-//Констуктор класса, инициализирует указатели
+//РљРѕРЅСЃС‚СѓРєС‚РѕСЂ РєР»Р°СЃСЃР°, РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ СѓРєР°Р·Р°С‚РµР»Рё
 template <typename T>
 DoublyLinkedList<T>::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
-//Деструктор класса, освобождает память занятую узлами
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ РєР»Р°СЃСЃР°, РѕСЃРІРѕР±РѕР¶РґР°РµС‚ РїР°РјСЏС‚СЊ Р·Р°РЅСЏС‚СѓСЋ СѓР·Р»Р°РјРё
 template <typename T>
 DoublyLinkedList<T>::~DoublyLinkedList() {
     while (head) {
@@ -92,10 +91,10 @@ DoublyLinkedList<T>::~DoublyLinkedList() {
     }
 }
 
-//Метод для добавления нового узла с указанным значением в конец списка
+//РњРµС‚РѕРґ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СѓР·Р»Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РІ РєРѕРЅРµС† СЃРїРёСЃРєР°
 template <typename T>
 void DoublyLinkedList<T>::insertBack(T val) {
-    //Предотвращает одновременный доступ к списку из нескольких потоков
+    //РџСЂРµРґРѕС‚РІСЂР°С‰Р°РµС‚ РѕРґРЅРѕРІСЂРµРјРµРЅРЅС‹Р№ РґРѕСЃС‚СѓРї Рє СЃРїРёСЃРєСѓ РёР· РЅРµСЃРєРѕР»СЊРєРёС… РїРѕС‚РѕРєРѕРІ
     std::lock_guard<std::mutex> lock(mutex);
     Node<T>* newNode = new Node<T>(val);
     if (!head) {
@@ -108,7 +107,7 @@ void DoublyLinkedList<T>::insertBack(T val) {
     }
 }
 
-//Метод для добавления нового узла с указанным значением в начало списка
+//РњРµС‚РѕРґ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СѓР·Р»Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РІ РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°
 template <typename T>
 void DoublyLinkedList<T>::insertFront(T val) {
     std::lock_guard<std::mutex> lock(mutex);
@@ -123,12 +122,12 @@ void DoublyLinkedList<T>::insertFront(T val) {
     }
 }
 
-//Метод для добавления нового узла с указанным значение после заданного узла
+//РњРµС‚РѕРґ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СѓР·Р»Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµ РїРѕСЃР»Рµ Р·Р°РґР°РЅРЅРѕРіРѕ СѓР·Р»Р°
 template <typename T>
 void DoublyLinkedList<T>::insertAfter(Node<T>* prevNode, T val) {
     std::lock_guard<std::mutex> lock(mutex);
     if (!prevNode) {
-        std::cout << "Указанный узел не существует." << std::endl;
+        std::cout << "РЈРєР°Р·Р°РЅРЅС‹Р№ СѓР·РµР» РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚." << std::endl;
         return;
     }
     Node<T>* newNode = new Node<T>(val);
@@ -141,7 +140,7 @@ void DoublyLinkedList<T>::insertAfter(Node<T>* prevNode, T val) {
     newNode->prev = prevNode;
 }
 
-//Метод для получения указателя на начало списка.
+//РњРµС‚РѕРґ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°.
 template <typename T>
 Node<T>* DoublyLinkedList<T>::getHead() const {
     return head;
@@ -157,21 +156,21 @@ void DoublyLinkedList<T>::display() {
     std::cout << std::endl;
 }
 
-//Метод для запуска параллельной сортировки слиянием списка
+//РњРµС‚РѕРґ РґР»СЏ Р·Р°РїСѓСЃРєР° РїР°СЂР°Р»Р»РµР»СЊРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё СЃР»РёСЏРЅРёРµРј СЃРїРёСЃРєР°
 template <typename T>
 void DoublyLinkedList<T>::parallelMergeSort() {
-    //Когда один поток начинает выполнение операции над списком, он блокирует мьютекс. Другие потоки должны ждать, пока мьютекс будет освобожден
+    //РљРѕРіРґР° РѕРґРёРЅ РїРѕС‚РѕРє РЅР°С‡РёРЅР°РµС‚ РІС‹РїРѕР»РЅРµРЅРёРµ РѕРїРµСЂР°С†РёРё РЅР°Рґ СЃРїРёСЃРєРѕРј, РѕРЅ Р±Р»РѕРєРёСЂСѓРµС‚ РјСЊСЋС‚РµРєСЃ. Р”СЂСѓРіРёРµ РїРѕС‚РѕРєРё РґРѕР»Р¶РЅС‹ Р¶РґР°С‚СЊ, РїРѕРєР° РјСЊСЋС‚РµРєСЃ Р±СѓРґРµС‚ РѕСЃРІРѕР±РѕР¶РґРµРЅ
     std::lock_guard<std::mutex> lock(mutex);
-    //Вызывается сортировка, начиная с head и заканчивая tail
+    //Р’С‹Р·С‹РІР°РµС‚СЃСЏ СЃРѕСЂС‚РёСЂРѕРІРєР°, РЅР°С‡РёРЅР°СЏ СЃ head Рё Р·Р°РєР°РЅС‡РёРІР°СЏ tail
     parallelMergeSortHelper(head, tail);
 }
 
-//Метод для сохранения содержимого списка в файл
+//РњРµС‚РѕРґ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃРїРёСЃРєР° РІ С„Р°Р№Р»
 template <typename T>
 void DoublyLinkedList<T>::saveToFile(const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cout << "Ошибка открытия файла для записи." << std::endl;
+        std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
         return;
     }
 
@@ -182,19 +181,19 @@ void DoublyLinkedList<T>::saveToFile(const std::string& filename) {
     }
 
     file.close();
-    std::cout << "Список сохранен в файл: " << filename << std::endl;
+    std::cout << "РЎРїРёСЃРѕРє СЃРѕС…СЂР°РЅРµРЅ РІ С„Р°Р№Р»: " << filename << std::endl;
 }
 
-//Метод для загрузки содержимого списка из файла
+//РњРµС‚РѕРґ РґР»СЏ Р·Р°РіСЂСѓР·РєРё СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃРїРёСЃРєР° РёР· С„Р°Р№Р»Р°
 template <typename T>
 void DoublyLinkedList<T>::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cout << "Ошибка открытия файла для чтения." << std::endl;
+        std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° РґР»СЏ С‡С‚РµРЅРёСЏ." << std::endl;
         return;
     }
 
-    // Очищаем текущий список перед загрузкой
+    // РћС‡РёС‰Р°РµРј С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє РїРµСЂРµРґ Р·Р°РіСЂСѓР·РєРѕР№
     while (head) {
         Node<T>* temp = head;
         head = head->next;
@@ -208,10 +207,10 @@ void DoublyLinkedList<T>::loadFromFile(const std::string& filename) {
     }
 
     file.close();
-    std::cout << "Список загружен из файла: " << filename << std::endl;
+    std::cout << "РЎРїРёСЃРѕРє Р·Р°РіСЂСѓР¶РµРЅ РёР· С„Р°Р№Р»Р°: " << filename << std::endl;
 }
 
-//Метод для удаления узла по указанному индексу
+//РњРµС‚РѕРґ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ СѓР·Р»Р° РїРѕ СѓРєР°Р·Р°РЅРЅРѕРјСѓ РёРЅРґРµРєСЃСѓ
 template <typename T>
 void DoublyLinkedList<T>::removeAt(int index) {
     std::lock_guard<std::mutex> lock(mutex);
@@ -237,28 +236,186 @@ void DoublyLinkedList<T>::removeAt(int index) {
     delete current;
 }
 
-//Метод для предоставления пользователю меню выбора действий с списком
+template<typename T>
+void DoublyLinkedList<T>::clear() {
+    Node<T>* current = head;
+    while (current) {
+        Node<T>* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+    tail = nullptr;
+}
+
 template <typename T>
-void DoublyLinkedList<T>::choice() {
+T DoublyLinkedList<T>::sum() const {
+    T total = 0;
+    Node<T>* current = head;
+    while (current) {
+        total += current->data;
+        current = current->next;
+    }
+    return total;
+}
+
+template <typename T>
+void DoublyLinkedList<T>::generateRandomList(int length) {
+    // РћС‡РёС‰Р°РµРј С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє РїРµСЂРµРґ РіРµРЅРµСЂР°С†РёРµР№
+    while (head) {
+        Node<T>* temp = head;
+        head = head->next;
+        delete temp;
+    }
+    tail = nullptr;
+
+    // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РіРµРЅРµСЂР°С‚РѕСЂ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+    // РЎРѕР·РґР°РµРј РІРµРєС‚РѕСЂ РІРѕР·РјРѕР¶РЅС‹С… Р·РЅР°С‡РµРЅРёР№
+    std::vector<T> possibleValues;
+    std::uniform_real_distribution<double> distribution(0.0, 999.99); // РџСЂРёРјРµСЂ: РґРёР°РїР°Р·РѕРЅ Р·РЅР°С‡РµРЅРёР№ РѕС‚ 0.0 РґРѕ 999.99
+
+    // Р“РµРЅРµСЂРёСЂСѓРµРј СЃР»СѓС‡Р°Р№РЅС‹Рµ РІРµС‰РµСЃС‚РІРµРЅРЅС‹Рµ С‡РёСЃР»Р° Рё РґРѕР±Р°РІР»СЏРµРј РёС… РІ РІРµРєС‚РѕСЂ
+    for (int i = 0; i < length; ++i) {
+        possibleValues.push_back(static_cast<T>(distribution(rng)));
+    }
+
+    // РџРµСЂРµРјРµС€РёРІР°РµРј РІРµРєС‚РѕСЂ
+    std::shuffle(possibleValues.begin(), possibleValues.end(), rng);
+
+    // Р‘РµСЂРµРј РїРµСЂРІС‹Рµ length СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°С‡РµСЃС‚РІРµ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР°
+    for (int i = 0; i < length; ++i) {
+        insertBack(possibleValues[i]);
+    }
+}
+
+template <typename T>
+void DoublyLinkedList<T>::generateUnsortedRandomList(int length) {
+    // РћС‡РёС‰Р°РµРј С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє РїРµСЂРµРґ РіРµРЅРµСЂР°С†РёРµР№
+    clear();
+
+    // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РіРµРЅРµСЂР°С‚РѕСЂ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    std::random_device rd;
+    std::mt19937 rng(rd());
+
+    // Р“РµРЅРµСЂРёСЂСѓРµРј СЃР»СѓС‡Р°Р№РЅС‹Рµ С‡РёСЃР»Р° Рё РґРѕР±Р°РІР»СЏРµРј РёС… РІ СЃРїРёСЃРѕРє
+    std::uniform_real_distribution<double> dist(0.0, 999.99); // РР·РјРµРЅРёС‚Рµ РіСЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР° РїРѕ РІР°С€РµРјСѓ СѓСЃРјРѕС‚СЂРµРЅРёСЋ
+    for (int i = 0; i < length; ++i) {
+        insertBack(dist(rng));
+    }
+}
+
+template <typename T>
+void DoublyLinkedList<T>::generateHalfSortedRandomList(int length) {
+    // РћС‡РёС‰Р°РµРј С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє РїРµСЂРµРґ РіРµРЅРµСЂР°С†РёРµР№
+    clear();
+
+    // РЎРѕР·РґР°РµРј СЃРїРёСЃРѕРє РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    std::vector<T> sortedRandomNumbers;
+    for (T i = 0; i < length; ++i) {
+        sortedRandomNumbers.push_back(i);
+    }
+
+    // РџРµСЂРµРјРµС€РёРІР°РµРј СЃРїРёСЃРѕРє
+    std::random_shuffle(sortedRandomNumbers.begin(), sortedRandomNumbers.end());
+
+    // Р”РѕР±Р°РІР»СЏРµРј РїРѕР»РѕРІРёРЅСѓ СЌР»РµРјРµРЅС‚РѕРІ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° РІ РЅРѕРІС‹Р№ СЃРїРёСЃРѕРє
+    for (size_t i = 0; i < sortedRandomNumbers.size() / 2; ++i) {
+        insertBack(sortedRandomNumbers[i]);
+    }
+
+    // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РіРµРЅРµСЂР°С‚РѕСЂ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    std::random_device rd;
+    std::mt19937 rng(rd());
+
+    // Р“РµРЅРµСЂРёСЂСѓРµРј СЃР»СѓС‡Р°Р№РЅС‹Рµ С‡РёСЃР»Р° Рё РґРѕР±Р°РІР»СЏРµРј РёС… РІ СЃРїРёСЃРѕРє
+    std::uniform_real_distribution<double> dist(0.0, 999.99); // РР·РјРµРЅРёС‚Рµ РіСЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР° РїРѕ РІР°С€РµРјСѓ СѓСЃРјРѕС‚СЂРµРЅРёСЋ
+    for (size_t i = sortedRandomNumbers.size() / 2; i < sortedRandomNumbers.size(); ++i) {
+        insertBack(dist(rng));
+    }
+}
+
+template <typename T>
+void DoublyLinkedList<T>::compareSortingTime() {
+    DoublyLinkedList<double> sortedList, unsortedList, halfSortedtList;
+    int length;
+    std::cout << "Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ СЃРїРёСЃРєРѕРІ: ";
+    std::cin >> length;
+
+    // Р“РµРЅРµСЂРёСЂСѓРµРј С‚СЂРё С‚РёРїР° СЃРїРёСЃРєРѕРІ
+    sortedList.generateRandomList(length);
+    unsortedList.generateUnsortedRandomList(length);
+    halfSortedtList.generateHalfSortedRandomList(length);
+
+    // РР·РјРµСЂСЏРµРј РІСЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё Рё РІС‹РІРѕРґРёРј СЂРµР·СѓР»СЊС‚Р°С‚С‹
+    std::cout << "Р’СЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР°: ";
+    auto start = std::chrono::high_resolution_clock::now();
+    sortedList.parallelMergeSort();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
+    std::cout << "Р’СЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё РЅРµРѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР°: ";
+    start = std::chrono::high_resolution_clock::now();
+    unsortedList.parallelMergeSort();
+    end = std::chrono::high_resolution_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
+    std::cout << "Р’СЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё СЃРїРёСЃРєР°, РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РЅР°РїРѕР»РѕРІРёРЅСѓ: ";
+    start = std::chrono::high_resolution_clock::now();
+    halfSortedtList.parallelMergeSort();
+    end = std::chrono::high_resolution_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
+    // Р’С‹РІРѕРґРёРј СЃРїРёСЃРєРё РїРѕСЃР»Рµ СЃРѕСЂС‚РёСЂРѕРІРєРё
+    //std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ СЃРѕСЂС‚РёСЂРѕРІРєРё: ";
+    //sortedList.display();
+    //std::cout << "РќРµРѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ СЃРѕСЂС‚РёСЂРѕРІРєРё: ";
+    //unsortedList.display();
+    //std::cout << "РЎРїРёСЃРѕРє, РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РЅР°РїРѕР»РѕРІРёРЅСѓ, РїРѕСЃР»Рµ СЃРѕСЂС‚РёСЂРѕРІРєРё: ";
+    //halfSortedtList.display();
+
+    // РџРѕРґСЃС‡РµС‚ СЃСѓРјРјС‹ РІСЃРµС… С‡РёСЃРµР» РІ СЃРїРёСЃРєР°С…
+    std::cout << "РЎСѓРјРјР° РІСЃРµС… С‡РёСЃРµР» РІ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРј СЃРїРёСЃРєРµ: " << sortedList.sum() << std::endl;
+    std::cout << "РЎСѓРјРјР° РІСЃРµС… С‡РёСЃРµР» РІ РЅРµРѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРј СЃРїРёСЃРєРµ: " << unsortedList.sum() << std::endl;
+    std::cout << "РЎСѓРјРјР° РІСЃРµС… С‡РёСЃРµР» РІ СЃРїРёСЃРєРµ, РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРј РЅР°РїРѕР»РѕРІРёРЅСѓ: " << halfSortedtList.sum() << std::endl;
+}
+
+template <typename T>
+void DoublyLinkedList<T>::displayList(Node<T>* listHead) {
+    Node<T>* current = listHead;
+    while (current) {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+    std::cout << std::endl;
+}
+
+//РњРµС‚РѕРґ РґР»СЏ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РјРµРЅСЋ РІС‹Р±РѕСЂР° РґРµР№СЃС‚РІРёР№ СЃ СЃРїРёСЃРєРѕРј
+template <typename T>
+void DoublyLinkedList<T>::choiceHelper() {
+    DoublyLinkedList<int> list1, list2;
     while (true) {
         int option;
-        std::cout << "Выберите действие:" << std::endl;
-        std::cout << "1. Отобразить список" << std::endl;
-        std::cout << "2. Сохранить список в файл" << std::endl;
-        std::cout << "3. Загрузить список из файла" << std::endl;
-        std::cout << "4. Параллельно отсортировать список" << std::endl;
-        std::cout << "5. Добавить элемент в конец списка" << std::endl;
-        std::cout << "6. Добавить элемент в начало списка" << std::endl;
-        std::cout << "7. Добавить элемент после указанного узла" << std::endl;
-        std::cout << "8. Удалить элемент по индексу" << std::endl;
-        std::cout << "0. Выход" << std::endl;
-        std::cout << "Ваш выбор: ";
+        std::cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ:" << std::endl;
+        std::cout << "1. РћС‚РѕР±СЂР°Р·РёС‚СЊ СЃРїРёСЃРѕРє" << std::endl;
+        std::cout << "2. РЎРѕС…СЂР°РЅРёС‚СЊ СЃРїРёСЃРѕРє РІ С„Р°Р№Р»" << std::endl;
+        std::cout << "3. Р—Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє РёР· С„Р°Р№Р»Р°" << std::endl;
+        std::cout << "4. РџР°СЂР°Р»Р»РµР»СЊРЅРѕ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє" << std::endl;
+        std::cout << "5. Р”РѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РІ РєРѕРЅРµС† СЃРїРёСЃРєР°" << std::endl;
+        std::cout << "6. Р”РѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РІ РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°" << std::endl;
+        std::cout << "7. Р”РѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РїРѕСЃР»Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°" << std::endl;
+        std::cout << "8. РЈРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ РїРѕ РёРЅРґРµРєСЃСѓ" << std::endl;
+        std::cout << "9. РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє СЃ Р·Р°РґР°РЅРЅРѕР№ РґР»РёРЅРѕР№, РѕС‚СЃРѕСЂРёСЂРѕРІР°С‚СЊ Рё РїРѕРґС‡РёС‚Р°С‚СЊ РІСЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё" << std::endl;
+        std::cout << "10. РЎСЂР°РІРЅРёС‚СЊ РІСЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё СЃРїРёСЃРєРѕРІ" << std::endl;
+        std::cout << "0. Р’С‹С…РѕРґ" << std::endl;
+        std::cout << "Р’Р°С€ РІС‹Р±РѕСЂ: ";
         std::cin >> option;
 
         switch (option) {
         case 1:
             system("cls");
-            std::cout << "Список: ";
+            std::cout << "РЎРїРёСЃРѕРє: ";
             display();
             system("pause");
             break;
@@ -266,7 +423,7 @@ void DoublyLinkedList<T>::choice() {
         {
             system("cls");
             std::string filename;
-            std::cout << "Введите имя файла для сохранения: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ С„Р°Р№Р»Р° РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ: ";
             std::cin >> filename;
             saveToFile(filename);
             system("pause");
@@ -276,7 +433,7 @@ void DoublyLinkedList<T>::choice() {
         {
             system("cls");
             std::string filename;
-            std::cout << "Введите имя файла для загрузки: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ С„Р°Р№Р»Р° РґР»СЏ Р·Р°РіСЂСѓР·РєРё: ";
             std::cin >> filename;
             loadFromFile(filename);
             system("pause");
@@ -285,20 +442,20 @@ void DoublyLinkedList<T>::choice() {
         case 4:
             system("cls");
             display();
-            std::cout << "Параллельная сортировка списка..." << std::endl;
+            std::cout << "РџР°СЂР°Р»Р»РµР»СЊРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° СЃРїРёСЃРєР°..." << std::endl;
             std::cout << std::endl;
             parallelMergeSort();
-            std::cout << "Список отсортирован." << std::endl;
+            std::cout << "РЎРїРёСЃРѕРє РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ." << std::endl;
             system("pause");
             break;
         case 5:
         {
             system("cls");
             T value;
-            std::cout << "Введите значение для добавления в конец списка: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РІ РєРѕРЅРµС† СЃРїРёСЃРєР°: ";
             std::cin >> value;
             insertBack(value);
-            std::cout << "Элемент добавлен в конец списка." << std::endl;
+            std::cout << "Р­Р»РµРјРµРЅС‚ РґРѕР±Р°РІР»РµРЅ РІ РєРѕРЅРµС† СЃРїРёСЃРєР°." << std::endl;
             system("pause");
         }
         break;
@@ -306,10 +463,10 @@ void DoublyLinkedList<T>::choice() {
         {
             system("cls");
             T value;
-            std::cout << "Введите значение для добавления в начало списка: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РІ РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°: ";
             std::cin >> value;
             insertFront(value);
-            std::cout << "Элемент добавлен в начало списка." << std::endl;
+            std::cout << "Р­Р»РµРјРµРЅС‚ РґРѕР±Р°РІР»РµРЅ РІ РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°." << std::endl;
             system("pause");
         }
         break;
@@ -317,10 +474,10 @@ void DoublyLinkedList<T>::choice() {
         {
             system("cls");
             T value;
-            std::cout << "Введите значение нового элемента: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°: ";
             std::cin >> value;
             int position;
-            std::cout << "Введите позицию после которой следует вставить элемент: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ РїРѕР·РёС†РёСЋ РїРѕСЃР»Рµ РєРѕС‚РѕСЂРѕР№ СЃР»РµРґСѓРµС‚ РІСЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚: ";
             std::cin >> position;
             Node<T>* current = head;
             while (current && position > 0) {
@@ -328,7 +485,7 @@ void DoublyLinkedList<T>::choice() {
                 position--;
             }
             insertAfter(current, value);
-            std::cout << "Элемент добавлен после указанного узла." << std::endl;
+            std::cout << "Р­Р»РµРјРµРЅС‚ РґРѕР±Р°РІР»РµРЅ РїРѕСЃР»Рµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°." << std::endl;
             system("pause");
         }
         break;
@@ -336,22 +493,96 @@ void DoublyLinkedList<T>::choice() {
         {
             system("cls");
             int index;
-            std::cout << "Введите индекс элемента для удаления: ";
+            std::cout << "Р’РІРµРґРёС‚Рµ РёРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ: ";
             std::cin >> index;
             removeAt(index);
-            std::cout << "Элемент удален по индексу." << std::endl;
+            std::cout << "Р­Р»РµРјРµРЅС‚ СѓРґР°Р»РµРЅ РїРѕ РёРЅРґРµРєСЃСѓ." << std::endl;
+            system("pause");
+        };
+        break;
+        case 9:
+        {
+            system("cls");
+            int length1, length2;
+            std::cout << "Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ РїРµСЂРІРѕРіРѕ СЃРїРёСЃРєР°: ";
+            std::cin >> length1;
+            std::cout << "Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ РІС‚РѕСЂРѕРіРѕ СЃРїРёСЃРєР°: ";
+            std::cin >> length2;
+
+            // Р“РµРЅРµСЂР°С†РёСЏ СЃРїРёСЃРєРѕРІ
+            list1.generateRandomList(length1);
+            list2.generateRandomList(length2);
+
+            // Р’С‹РІРѕРґ СЃРїРёСЃРєРѕРІ
+            std::cout << "РџРµСЂРІС‹Р№ СЃРїРёСЃРѕРє: ";
+            list1.display();
+            std::cout << "Р’С‚РѕСЂРѕР№ СЃРїРёСЃРѕРє: ";
+            list2.display();
+
+            std::string var;
+            std::cout << "РҐРѕС‚РёС‚Рµ РїСЂРѕРІРµСЃС‚Рё СЃРѕСЂС‚РёСЂРѕРІРєСѓ СЃРїРёСЃРєРѕРІ ? (РґР° / РЅРµС‚) : ";
+            std::cin >> var;
+            if (var == "РґР°") {
+                // РџРѕРґСЃС‡РµС‚ РІСЂРµРјРµРЅРё СЃРѕСЂС‚РёСЂРѕРІРєРё РґР»СЏ РїРµСЂРІРѕРіРѕ СЃРїРёСЃРєР°
+                auto start1 = std::chrono::steady_clock::now();
+                list1.parallelMergeSort();
+                auto end1 = std::chrono::steady_clock::now();
+                std::chrono::duration<double> elapsed_seconds1 = end1 - start1;
+
+                // РџРѕРґСЃС‡РµС‚ РІСЂРµРјРµРЅРё СЃРѕСЂС‚РёСЂРѕРІРєРё РґР»СЏ РІС‚РѕСЂРѕРіРѕ СЃРїРёСЃРєР°
+                auto start2 = std::chrono::steady_clock::now();
+                list2.parallelMergeSort();
+                auto end2 = std::chrono::steady_clock::now(); 
+                std::chrono::duration<double> elapsed_seconds2 = end2 - start2;
+
+                std::cout << "РџРµСЂРІС‹Р№ СЃРїРёСЃРѕРє: ";
+                list1.display();
+                std::cout << "Р’СЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё РїРµСЂРІРѕРіРѕ СЃРїРёСЃРєР°: " << elapsed_seconds1.count() << " СЃРµРєСѓРЅРґ." << std::endl;
+                std::cout << "Р’С‚РѕСЂРѕР№ СЃРїРёСЃРѕРє: ";
+                list2.display();
+                std::cout << "Р’СЂРµРјСЏ СЃРѕСЂС‚РёСЂРѕРІРєРё РІС‚РѕСЂРѕРіРѕ СЃРїРёСЃРєР°: " << elapsed_seconds2.count() << " СЃРµРєСѓРЅРґ." << std::endl;
+
+            }
+            else {
+            }
+
+            // РЎРѕС…СЂР°РЅРµРЅРёРµ СЃРїРёСЃРєРѕРІ РІ С„Р°Р№Р»
+            std::string choice;
+            std::cout << "РҐРѕС‚РёС‚Рµ СЃРѕС…СЂР°РЅРёС‚СЊ СЃРїРёСЃРєРё РІ С„Р°Р№Р»? (РґР°/РЅРµС‚): ";
+            std::cin >> choice;
+            if (choice == "РґР°") {
+                std::string filename1, filename2;
+                std::cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° РґР»СЏ РїРµСЂРІРѕРіРѕ СЃРїРёСЃРєР°: ";
+                std::cin >> filename1;
+                list1.saveToFile(filename1);
+                std::cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° РґР»СЏ РІС‚РѕСЂРѕРіРѕ СЃРїРёСЃРєР°: ";
+                std::cin >> filename2;
+                list2.saveToFile(filename2);
+                std::cout << "РЎРїРёСЃРєРё СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹ РІ С„Р°Р№Р»С‹ " << filename1 << " Рё " << filename2 << std::endl;
+            }
+            else {
+                std::cout << "РЎРїРёСЃРєРё РЅРµ СЃРѕС…СЂР°РЅРµРЅС‹." << std::endl;
+            }
+            system("pause");
+        }
+        break;
+        case 10:
+        {
+            system("cls");
+            compareSortingTime();
             system("pause");
         }
         break;
         case 0:
-            std::cout << "Выход из программы." << std::endl;
+            std::cout << "Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹." << std::endl;
             return;
         default:
-            std::cout << "Неверный выбор." << std::endl;
+            std::cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ." << std::endl;
         }
         system("cls");
     }
 }
+
 
 template class DoublyLinkedList<int>;
 template class DoublyLinkedList<float>;
