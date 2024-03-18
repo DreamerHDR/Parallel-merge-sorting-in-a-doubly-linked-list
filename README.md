@@ -1,1 +1,1 @@
-# Kursovaja_SD
+# Kursovaja_Sd
